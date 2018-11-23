@@ -3,6 +3,7 @@ var fs = require('file-system');
 
 var dirname = "";
 var timeout = 30000;
+var total = 0;
 
 function validateUrl(url) {
     var test = true;
@@ -83,6 +84,7 @@ async function getScreenshots(page, directory, height, width, name) {
     }
 
     console.info("successfully captured");
+    return total++;
 }
 
 async function getUrlAndResolutions(viewports, urls) {
@@ -97,6 +99,8 @@ async function getUrlAndResolutions(viewports, urls) {
         let test = await setViewports(viewports, urls, dirname);
         if (test === false)
             return;
+        else
+            return test;
     } catch (err) {
         console.error(err);
     }
@@ -126,6 +130,8 @@ async function setViewports(viewports, urls, directory) {
 
         browser.close();
 
+        return total;
+
     } catch (err) {
         console.error(err);
         return false;
@@ -136,7 +142,7 @@ function sanitizeLocation(location) {
     return location.replace(/[|"<>:*?]/g, "");
 }
 
-module.exports.capture = function (viewports, urls, location) {
+module.exports.capture = function (viewports, urls, location, callback) {
     if (typeof (urls) === "string") {
         urls = [{
             url: urls
@@ -151,7 +157,7 @@ module.exports.capture = function (viewports, urls, location) {
         return;
     }
 
-    getUrlAndResolutions(viewports, urls);
+    return getUrlAndResolutions(viewports, urls);
 };
 
 module.exports.setDir = function (location) {
