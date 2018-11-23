@@ -83,7 +83,7 @@ async function getScreenshots(page, directory, height, width, name) {
         console.log(err);
     }
 
-    console.info("successfully captured");
+    console.info(new Date().getTime() + ": successfully captured " + total);
     return total++;
 }
 
